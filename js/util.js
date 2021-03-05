@@ -1,5 +1,3 @@
-export {getRandomInt};
-
 // получение случайного целого числа из переданного диапазона включительно
 
 const getRandomInt = (a, b) => {
@@ -18,8 +16,7 @@ const getRandomInt = (a, b) => {
 
 // проверка максимальной длины строки
 
+// eslint-disable-next-line no-unused-vars
 const isStringLessLimit = (message, limit) => message.length <= limit;
 
-if (isStringLessLimit('Привет, Кекс!', 12)) {
-  // результат если true
-}
+export {getRandomInt};

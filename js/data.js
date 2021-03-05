@@ -2,9 +2,8 @@ import {getRandomInt} from './util.js';
 
 // генерирование временных данных
 
-let photoId, commentId;
 const PHOTO_COUNT = 25;
-const PHOTOS = [];
+const photos = [];
 
 const NAMES = [
   'Иван',
@@ -56,14 +55,13 @@ const getRandomArrayElement = (array) => {
   return array[getRandomInt(0, array.length - 1)];
 }
 
-const createPhotoDescription = () => {
+const createPhotoDescription = (photoId) => {
   const likes = getRandomInt(15, 200);
   const commentCount = getRandomInt(1, NAMES.length);
-  const COMMENTS = [];
+  const comments = [];
 
   for (let j = 1; j <= commentCount; j++) {
-    commentId = j;
-    COMMENTS.push(createPhotoComment());
+    comments.push(createPhotoComment(j));
   }
 
   const photoItem = {
@@ -71,13 +69,13 @@ const createPhotoDescription = () => {
     url: 'photos/' + photoId + '.jpg',
     description: DESCRIPTIONS[photoId - 1],
     likes: likes,
-    comments: COMMENTS,
+    comments: comments,
   };
 
   return photoItem;
 };
 
-const createPhotoComment = () => {
+const createPhotoComment = (commentId) => {
   const messageCount = getRandomInt(1, 2);
   let message = '';
 
@@ -99,10 +97,12 @@ const createPhotoComment = () => {
   return commentItem;
 };
 
-for (let i = 1; i <= PHOTO_COUNT; i++) {
-  photoId = i;
-  PHOTOS.push(createPhotoDescription());
-}
+const createPhotos = () => {
+  for (let i = 1; i <= PHOTO_COUNT; i++) {
+    photos.push(createPhotoDescription(i));
+  }
 
-// eslint-disable-next-line no-console
-console.log(PHOTOS);
+  return photos;
+};
+
+export {createPhotos};
