@@ -16,7 +16,12 @@ const getRandomInt = (a, b) => {
 
 // проверка максимальной длины строки
 
-// eslint-disable-next-line no-unused-vars
 const isStringLessLimit = (message, limit) => message.length <= limit;
 
-export {getRandomInt};
+// проверка нажатия Esc
+
+const isEscEvent = (evt) => {
+  return evt.key === ('Escape' || 'Esc');
+};
+
+export {getRandomInt, isStringLessLimit, isEscEvent};
