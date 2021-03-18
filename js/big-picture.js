@@ -11,4 +11,12 @@ const createBigPicture = (url, likes, comments) => {
   return bigPicture;
 }
 
-export {bigPicture, createBigPicture};
+const createBigComment = (image, text, comment) => {
+  image.src = comment.avatar;
+  image.alt = comment.name;
+  text.textContent = comment.message;
+
+  return image, text;
+};
+
+export {bigPicture, createBigPicture, createBigComment};
