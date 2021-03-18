@@ -1,5 +1,5 @@
 import {createPhotos} from './data.js';
-import {bigPicture, createBigPicture} from './big-picture.js';
+import {bigPicture, createBigPicture, createBigComment} from './big-picture.js';
 import {isEscEvent} from './util.js';
 
 const pictureList = document.querySelector('.pictures');
@@ -9,16 +9,18 @@ const pictureImage = pictureTemplate.querySelector('.picture__img');
 const pictureLikes = pictureTemplate.querySelector('.picture__likes');
 const pictureComments = pictureTemplate.querySelector('.picture__comments');
 
+const bigPictureList = document.querySelector('.social__comments');
 const bigPictureClose = document.querySelector('.big-picture__cancel');
 
 const photosList = createPhotos();
 
 const pictureListFragment = document.createDocumentFragment();
 
-photosList.forEach(({url, likes, comments}) => {
+photosList.forEach(({id, url, likes, comments}) => {
   pictureImage.src = url;
   pictureLikes.textContent = likes;
   pictureComments.textContent = comments.length;
+  picture.setAttribute('data-id', id);
 
   pictureListFragment.appendChild(picture.cloneNode(true));
 });
@@ -36,6 +38,8 @@ const onBigPictureEscKeydown = (evt) => {
 
 const closeBigPicture = () => {
   bigPicture.classList.add('hidden');
+
+  bigPictureList.innerHTML = '';
 
   bigPictureClose.removeEventListener('click', () => {
     closeBigPicture();
@@ -58,10 +62,26 @@ const openBigPicture = (picture) => {
 
     document.addEventListener('keydown', onBigPictureEscKeydown);
 
-    const bigPictureImage = picture.querySelector('.picture__img').src;
-    const bigPictureLikes = picture.querySelector('.picture__likes').textContent;
-    const bigPictureComments = picture.querySelector('.picture__comments').textContent;
+    const pictureId = evt.currentTarget.getAttribute('data-id');
+
+    const bigPictureImage = photosList[pictureId - 1].url;
+    const bigPictureLikes = photosList[pictureId - 1].likes;
+    const bigPictureComments = photosList[pictureId - 1].comments.length;
     createBigPicture(bigPictureImage, bigPictureLikes, bigPictureComments);
+
+    const bigPictureElementTemplate = '<li class="social__comment"><img class="social__image" src="" alt="" width="35" height="35"><p class="social__text"></p></li>';
+
+    for (let i = 0; i < photosList[pictureId - 1].comments.length; i++) {
+      bigPictureList.insertAdjacentHTML('beforeend', bigPictureElementTemplate);
+    }
+
+    const bigPictureElementsList = bigPictureList.children;
+    const bigPictureImages = bigPictureList.querySelectorAll('.social__image');
+    const bigPictureTexts = bigPictureList.querySelectorAll('.social__text');
+
+    for (let j = 0; j < bigPictureElementsList.length; j++) {
+      createBigComment(bigPictureImages[j], bigPictureTexts[j], photosList[pictureId - 1].comments[j]);
+    }
 
     document.querySelector('.social__comment-count').classList.add('hidden');
     document.querySelector('.comments-loader').classList.add('hidden');
@@ -71,29 +91,4 @@ const openBigPicture = (picture) => {
 
 for (let i = 0; i <= pictures.length - 1; i++) {
   openBigPicture(pictures[i]);
-}
-
-const bigPictureList = document.querySelector('.social__comments');
-
-const bigPictureElementTemplate = '<li class="social__comment"><img class="social__picture" src="" alt="" width="35" height="35"><p class="social__text"></p></li>';
-
-for (let i = 0; i < photosList[0].comments.length; i++) {
-  bigPictureList.insertAdjacentHTML('beforeend', bigPictureElementTemplate);
-}
-
-const bigPictureElementsList = bigPictureList.children;
-const bigPictureElement = document.querySelector('.social__comment');
-const bigPictureImages = document.querySelectorAll('.social__picture');
-const bigPictureTexts = document.querySelectorAll('.social__text');
-
-const createComment = (image, text, comment) => {
-  image.src = comment.avatar;
-  image.alt = comment.name;
-  text.textContent = comment.message;
-
-  return bigPictureElement;
-};
-
-for (let j = 0; j < bigPictureElementsList.length; j++) {
-  createComment(bigPictureImages[j], bigPictureTexts[j], photosList[0].comments[j]);
 }
