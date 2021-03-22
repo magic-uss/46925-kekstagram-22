@@ -16,7 +16,7 @@ const getRandomInt = (a, b) => {
 
 // проверка максимальной длины строки
 
-const isStringLessLimit = (message, limit) => message.length <= limit;
+const isStringOverLimit = (message, limit) => message.length >= limit;
 
 // проверка нажатия Esc
 
@@ -24,4 +24,4 @@ const isEscEvent = (evt) => {
   return evt.key === ('Escape' || 'Esc');
 };
 
-export {getRandomInt, isStringLessLimit, isEscEvent};
+export {getRandomInt, isStringOverLimit, isEscEvent};

@@ -2,11 +2,13 @@ const bigPicture = document.querySelector('.big-picture');
 const bigImage = document.querySelector('.big-picture__big-img');
 const bigLikes = document.querySelector('.likes-count');
 const bigComments = document.querySelector('.comments-count');
+const bigDescription = document.querySelector('.social__caption');
 
-const createBigPicture = (url, likes, comments) => {
+const createBigPicture = (url, likes, comments, description) => {
   bigImage.src = url;
   bigLikes.textContent = likes;
   bigComments.textContent = comments;
+  bigDescription.textContent = description;
 
   return bigPicture;
 }
