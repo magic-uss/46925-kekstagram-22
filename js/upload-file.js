@@ -1,11 +1,14 @@
 import {isEscEvent} from './util.js';
 import {uploadNewPhoto} from './photo-editing.js';
+import {page} from './nodes.js';
 
 const uploadClose = document.querySelector('#upload-cancel');
+const uploadInput = document.querySelector('#upload-file');
+const imageUploadWindow = document.querySelector('.img-upload__overlay');
 
-document.querySelector('#upload-file').addEventListener('change', () => {
-  document.querySelector('.img-upload__overlay').classList.remove('hidden');
-  document.querySelector('body').classList.add('modal-open');
+uploadInput.addEventListener('change', () => {
+  imageUploadWindow.classList.remove('hidden');
+  page.classList.add('modal-open');
 
   uploadNewPhoto();
 
@@ -24,10 +27,10 @@ const onUploadEscKeydown = (evt) => {
 };
 
 const closeUpload = () => {
-  document.querySelector('.img-upload__overlay').classList.add('hidden');
-  document.querySelector('body').classList.remove('modal-open');
+  imageUploadWindow.classList.add('hidden');
+  page.classList.remove('modal-open');
 
-  document.querySelector('#upload-file').value = '';
+  uploadInput.value = '';
 
   uploadClose.removeEventListener('click', () => {
     closeUpload();

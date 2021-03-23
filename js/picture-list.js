@@ -1,6 +1,7 @@
 import {createPhotos} from './data.js';
 import {bigPicture, createBigPicture, createBigComment} from './big-picture.js';
 import {isEscEvent} from './util.js';
+import {page} from './nodes.js';
 
 const pictureList = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content;
@@ -47,7 +48,7 @@ const closeBigPicture = () => {
 
   document.removeEventListener('keydown', onBigPictureEscKeydown);
 
-  document.querySelector('body').classList.remove('modal-open');
+  page.classList.remove('modal-open');
 }
 
 const openBigPicture = (picture) => {
@@ -67,7 +68,8 @@ const openBigPicture = (picture) => {
     const bigPictureImage = photosList[pictureId - 1].url;
     const bigPictureLikes = photosList[pictureId - 1].likes;
     const bigPictureComments = photosList[pictureId - 1].comments.length;
-    createBigPicture(bigPictureImage, bigPictureLikes, bigPictureComments);
+    const bigPictureDescription = photosList[pictureId - 1].description;
+    createBigPicture(bigPictureImage, bigPictureLikes, bigPictureComments, bigPictureDescription);
 
     const bigPictureElementTemplate = '<li class="social__comment"><img class="social__image" src="" alt="" width="35" height="35"><p class="social__text"></p></li>';
 
@@ -85,7 +87,7 @@ const openBigPicture = (picture) => {
 
     document.querySelector('.social__comment-count').classList.add('hidden');
     document.querySelector('.comments-loader').classList.add('hidden');
-    document.querySelector('body').classList.add('modal-open');
+    page.classList.add('modal-open');
   });
 };
 
