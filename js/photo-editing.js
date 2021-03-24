@@ -2,7 +2,6 @@ import {effectSlider, previewImage, originalEffect} from './nodes.js';
 
 const scaleValue = document.querySelector('.scale__control--value');
 const scaleSmaller = document.querySelector('.scale__control--smaller');
-const scaleBigger = document.querySelector('.scale__control--bigger');
 
 const DEFAULT_SCALE_VALUE = 100;
 let originalScale = DEFAULT_SCALE_VALUE;
@@ -17,7 +16,9 @@ const uploadNewPhoto = () => {
   originalEffect.setAttribute('checked', true);
 }
 
-const resizePhoto = (value) => {
+const resizePhoto = (evt) => {
+  const value = (evt.target === scaleSmaller) ? -25 : 25;
+
   originalScale = originalScale + value;
 
   if (originalScale < 25 || originalScale > 100) {
@@ -37,23 +38,7 @@ const resizePhoto = (value) => {
   return originalScale;
 }
 
-/*scaleSmaller.addEventListener('click', () => {
-  resizePhoto(-25);
-})
-
-scaleBigger.addEventListener('click', () => {
-  resizePhoto(25);
-})*/
-
-document.querySelector('.img-upload__scale').addEventListener('click', (evt) => {
-  if (scaleSmaller == evt.target) {
-    resizePhoto(-25);
-  }
-
-  if (scaleBigger == evt.target) {
-    resizePhoto(25);
-  }
-})
+document.querySelector('.img-upload__scale').addEventListener('click', resizePhoto);
 
 const effectRadioButtons = document.querySelectorAll('.effects__radio');
 

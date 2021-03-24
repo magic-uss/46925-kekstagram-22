@@ -1,7 +1,7 @@
-import {createPhotos} from './data.js';
+/*
 import {bigPicture, createBigPicture, createBigComment} from './big-picture.js';
 import {isEscEvent} from './util.js';
-import {page} from './nodes.js';
+import {page} from './nodes.js';*/
 
 const pictureList = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content;
@@ -9,33 +9,35 @@ const picture = pictureTemplate.querySelector('.picture');
 const pictureImage = pictureTemplate.querySelector('.picture__img');
 const pictureLikes = pictureTemplate.querySelector('.picture__likes');
 const pictureComments = pictureTemplate.querySelector('.picture__comments');
-
+/*
 const bigPictureList = document.querySelector('.social__comments');
-const bigPictureClose = document.querySelector('.big-picture__cancel');
+const bigPictureClose = document.querySelector('.big-picture__cancel');*/
 
-const photosList = createPhotos();
+const createPhotos = (photos) => {
+  const pictureListFragment = document.createDocumentFragment();
 
-const pictureListFragment = document.createDocumentFragment();
+  photos.forEach(({id, url, likes, comments}) => {
+    pictureImage.src = url;
+    pictureLikes.textContent = likes;
+    pictureComments.textContent = comments.length;
+    picture.setAttribute('data-id', id);
 
-photosList.forEach(({id, url, likes, comments}) => {
-  pictureImage.src = url;
-  pictureLikes.textContent = likes;
-  pictureComments.textContent = comments.length;
-  picture.setAttribute('data-id', id);
+    pictureListFragment.appendChild(picture.cloneNode(true));
+  })
 
-  pictureListFragment.appendChild(picture.cloneNode(true));
-});
-
-pictureList.appendChild(pictureListFragment);
+  pictureList.appendChild(pictureListFragment);
+}
 
 const pictures = pictureList.querySelectorAll('.picture');
-
+console.log(pictureList);
+console.log(pictureList.querySelectorAll('.picture'));
+/*
 const onBigPictureEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
     closeBigPicture();
   }
-};
+}
 
 const closeBigPicture = () => {
   bigPicture.classList.add('hidden');
@@ -44,28 +46,30 @@ const closeBigPicture = () => {
 
   bigPictureClose.removeEventListener('click', () => {
     closeBigPicture();
-  });
+  })
 
   document.removeEventListener('keydown', onBigPictureEscKeydown);
 
   page.classList.remove('modal-open');
-}
+}*/
 
 const openBigPicture = (picture) => {
   picture.addEventListener('click', (evt) => {
     evt.preventDefault();
-
+    console.log(evt.currentTarget);
+/*
     bigPicture.classList.remove('hidden');
 
     bigPictureClose.addEventListener('click', () => {
       closeBigPicture();
-    });
+    })
 
     document.addEventListener('keydown', onBigPictureEscKeydown);
 
     const pictureId = evt.currentTarget.getAttribute('data-id');
-
-    const bigPictureImage = photosList[pictureId - 1].url;
+    console.log(pictureId);
+    console.log(picture[pictureId - 1].pictureImage.url);
+    const bigPictureImage = picture[pictureId - 1].pictureImage.url;
     const bigPictureLikes = photosList[pictureId - 1].likes;
     const bigPictureComments = photosList[pictureId - 1].comments.length;
     const bigPictureDescription = photosList[pictureId - 1].description;
@@ -87,10 +91,15 @@ const openBigPicture = (picture) => {
 
     document.querySelector('.social__comment-count').classList.add('hidden');
     document.querySelector('.comments-loader').classList.add('hidden');
-    page.classList.add('modal-open');
-  });
-};
+    page.classList.add('modal-open');*/
+  })
+}
 
 for (let i = 0; i <= pictures.length - 1; i++) {
   openBigPicture(pictures[i]);
 }
+
+
+
+export {createPhotos};
+

@@ -19,6 +19,6 @@ const createBigComment = (image, text, comment) => {
   text.textContent = comment.message;
 
   return image, text;
-};
+}
 
 export {bigPicture, createBigPicture, createBigComment};
