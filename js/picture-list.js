@@ -27,10 +27,10 @@ const createPhotos = (photos) => {
 
   pictureList.appendChild(pictureListFragment);
 }
-
+/*
 const pictures = pictureList.querySelectorAll('.picture');
 console.log(pictureList);
-console.log(pictureList.querySelectorAll('.picture'));
+console.log(pictures);*/
 /*
 const onBigPictureEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
@@ -52,11 +52,10 @@ const closeBigPicture = () => {
 
   page.classList.remove('modal-open');
 }*/
-
+/*
 const openBigPicture = (picture) => {
   picture.addEventListener('click', (evt) => {
     evt.preventDefault();
-    console.log(evt.currentTarget);
 /*
     bigPicture.classList.remove('hidden');
 
@@ -91,7 +90,7 @@ const openBigPicture = (picture) => {
 
     document.querySelector('.social__comment-count').classList.add('hidden');
     document.querySelector('.comments-loader').classList.add('hidden');
-    page.classList.add('modal-open');*/
+    page.classList.add('modal-open');
   })
 }
 
@@ -100,6 +99,6 @@ for (let i = 0; i <= pictures.length - 1; i++) {
 }
 
 
-
+*/
 export {createPhotos};
 

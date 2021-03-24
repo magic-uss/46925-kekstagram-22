@@ -21,6 +21,10 @@ uploadInput.addEventListener('change', () => {
 
 const onUploadEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
+    if (document.activeElement.tagName === 'INPUT') {
+      evt.stopPropagation();
+    }
+
     evt.preventDefault();
     closeUpload();
   }
@@ -38,3 +42,5 @@ const closeUpload = () => {
 
   document.removeEventListener('keydown', onUploadEscKeydown);
 }
+
+export {closeUpload};

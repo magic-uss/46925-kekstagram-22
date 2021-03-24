@@ -1,18 +1,14 @@
 import {isStringOverLimit} from './util.js';
+import {sendData} from './api.js';
 
 const hashtagsInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
+const imgUploadForm = document.querySelector('.img-upload__form');
 
 const MIN_HASHTAG_LENGTH = 2;
 const MAX_HASHTAG_LENGTH = 20;
 const MAX_HASHTAG_QUANTITY = 5;
 const MAX_COMMENT_LENGTH = 140;
-
-hashtagsInput.addEventListener('focus', (evt) => {
-  if (document.activeElement.tagName === 'INPUT') {
-    evt.stopPropagation();
-  }
-})
 
 hashtagsInput.addEventListener('input', () => {
   let hashtagsArray = hashtagsInput.value.toLowerCase().split(' ');
@@ -60,3 +56,18 @@ commentInput.addEventListener('input', () => {
     commentInput.removeAttribute('style');
   }
 })
+
+const setUserFormSubmit = (onSuccess) => {
+  imgUploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => {
+        onSuccess();
+      },
+      new FormData(evt.target),
+    );
+  })
+}
+
+export {setUserFormSubmit, hashtagsInput, commentInput};

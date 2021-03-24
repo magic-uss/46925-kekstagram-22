@@ -1,4 +1,5 @@
 import {effectSlider, previewImage, originalEffect} from './nodes.js';
+import {hashtagsInput, commentInput} from './img-upload-form.js';
 
 const scaleValue = document.querySelector('.scale__control--value');
 const scaleSmaller = document.querySelector('.scale__control--smaller');
@@ -14,6 +15,8 @@ const uploadNewPhoto = () => {
   previewImage.removeAttribute('class');
   effectSlider.setAttribute('hidden', true);
   originalEffect.setAttribute('checked', true);
+  hashtagsInput.value = '';
+  commentInput.value = '';
 }
 
 const resizePhoto = (evt) => {
