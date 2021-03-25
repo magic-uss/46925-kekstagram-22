@@ -3,6 +3,7 @@ import {hashtagsInput, commentInput} from './img-upload-form.js';
 
 const scaleValue = document.querySelector('.scale__control--value');
 const scaleSmaller = document.querySelector('.scale__control--smaller');
+const inputEffect = document.querySelector('.effects__radio');
 
 const DEFAULT_SCALE_VALUE = 100;
 let originalScale = DEFAULT_SCALE_VALUE;
@@ -11,10 +12,10 @@ const uploadNewPhoto = () => {
   originalScale = DEFAULT_SCALE_VALUE;
   scaleValue.value = DEFAULT_SCALE_VALUE + '%';
   previewImage.style.transform = 'scale(' + 1 + ')';
-  previewImage.style.filter = '';
+  previewImage.removeAttribute('style', 'filter');
   previewImage.removeAttribute('class');
   effectSlider.setAttribute('hidden', true);
-  originalEffect.setAttribute('checked', true);
+  inputEffect.removeAttribute('checked');
   hashtagsInput.value = '';
   commentInput.value = '';
 }

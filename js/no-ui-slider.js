@@ -43,8 +43,9 @@ const sliderUpdate = (effect, units) => {
   effectSlider.noUiSlider.off('update');
 
   effectSlider.noUiSlider.on('update', (values, handle) => {
-    effectValue.value = values[handle];
-    previewImage.style.filter = effect + '(' + effectValue.value + units + ')';
+    effectValue.text = values[handle];
+
+    previewImage.style.filter = effect + '(' + effectValue.text + units + ')';
   });
 }
 

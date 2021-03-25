@@ -21,8 +21,8 @@ uploadInput.addEventListener('change', () => {
 
 const onUploadEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
-    if (document.activeElement.tagName === 'INPUT') {
-      evt.stopPropagation();
+    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+      return;
     }
 
     evt.preventDefault();

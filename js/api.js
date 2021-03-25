@@ -1,22 +1,15 @@
-import {page} from './nodes.js';
-const pageMain = document.querySelector('main');
-const errorTemplate = document.querySelector('#error').content;
-const errorMessage = errorTemplate.querySelector('.error');
-const successTemplate = document.querySelector('#success').content;
-const successMessage = successTemplate.querySelector('.success');
-
-const getData = (onSuccess) => {
-  fetch('https://22.javascript.pages.academy/kekstagram/data')
+const getData = (onSuccess, onError) => () => {
+  return fetch('https://22.javascript.pages.academy/kekstagram/data')
     .then((response) => response.json())
     .then((uploadedPhotos) => {
       onSuccess(uploadedPhotos);
     })
     .catch(() => {
-      page.insertAdjacentHTML('beforeend', '<p style="position: absolute; top: 0;">Ошибка загрузки данных с сервера</p>');
+      onError();
     })
 }
 
-const sendData = (onSuccess, body) => {
+const sendData = (onSuccess, onError, body) => {
   fetch(
     'https://22.javascript.pages.academy/kekstagram',
     {
@@ -26,14 +19,13 @@ const sendData = (onSuccess, body) => {
   )
     .then((response) => {
       if (response.ok) {
-        onSuccess()
-        pageMain.insertAdjacentHTML('afterbegin', successMessage);
+        onSuccess();
       } else {
-        pageMain.insertAdjacentHTML('afterbegin', errorMessage);
+        onError();
       }
     })
     .catch(() => {
-      pageMain.insertAdjacentHTML('afterbegin', errorMessage);
+      onError();
     })
 }
 

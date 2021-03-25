@@ -1,5 +1,6 @@
-import {isStringOverLimit} from './util.js';
+import {isStringOverLimit, isEscEvent} from './util.js';
 import {sendData} from './api.js';
+import {pageMain} from './nodes.js';
 
 const hashtagsInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
@@ -9,6 +10,11 @@ const MIN_HASHTAG_LENGTH = 2;
 const MAX_HASHTAG_LENGTH = 20;
 const MAX_HASHTAG_QUANTITY = 5;
 const MAX_COMMENT_LENGTH = 140;
+
+const errorTemplate = document.querySelector('#error').content;
+const errorMessage = errorTemplate.querySelector('.error');
+const successTemplate = document.querySelector('#success').content;
+const successMessage = successTemplate.querySelector('.success');
 
 hashtagsInput.addEventListener('input', () => {
   let hashtagsArray = hashtagsInput.value.toLowerCase().split(' ');
@@ -57,17 +63,70 @@ commentInput.addEventListener('input', () => {
   }
 })
 
-const setUserFormSubmit = (onSuccess) => {
+const showPopupSuccess = () => {
+  const element = successMessage.cloneNode(true);
+  element.style.zIndex = 1000;
+  pageMain.appendChild(element);
+
+  const onEscKeydown = (evt) => {
+    if (isEscEvent(evt)) {
+      onPopupClick();
+    }
+  }
+
+  const onPopupClick = () => {
+    element.remove();
+    document.removeEventListener('keydown', onEscKeydown);
+  }
+
+  document.addEventListener('keydown', onEscKeydown);
+  element.addEventListener('click', onPopupClick);
+
+  const button = document.querySelector('.success__button');
+  button.addEventListener('click', onPopupClick);
+}
+
+const success = () => {
+  showPopupSuccess();
+}
+
+const showPopupError = () => {
+  const element = errorMessage.cloneNode(true);
+  element.style.zIndex = 1000;
+  pageMain.appendChild(element);
+
+  const onEscKeydown = (evt) => {
+    if (isEscEvent(evt)) {
+      onPopupClick();
+    }
+  }
+
+  const onPopupClick = () => {
+    element.remove();
+    document.removeEventListener('keydown', onEscKeydown);
+  }
+
+  document.addEventListener('keydown', onEscKeydown);
+  element.addEventListener('click', onPopupClick);
+
+  const button = document.querySelector('.error__button');
+  button.addEventListener('click', onPopupClick);
+}
+
+const error = () => {
+  showPopupError();
+}
+
+const setUserFormSubmit = (onSuccess, onError) => {
   imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     sendData(
-      () => {
-        onSuccess();
-      },
+      () => onSuccess(success()),
+      () => onError(error()),
       new FormData(evt.target),
     );
-  })
+  });
 }
 
 export {setUserFormSubmit, hashtagsInput, commentInput};
