@@ -4,7 +4,6 @@ import {hashtagsInput, commentInput} from './img-upload-form.js';
 const scaleValue = document.querySelector('.scale__control--value');
 const scaleSmaller = document.querySelector('.scale__control--smaller');
 const inputEffect = document.querySelector('.effects__radio');
-
 const DEFAULT_SCALE_VALUE = 100;
 let originalScale = DEFAULT_SCALE_VALUE;
 
