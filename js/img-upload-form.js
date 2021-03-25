@@ -1,79 +1,132 @@
-import {isStringOverLimit} from './util.js';
+import {isStringOverLimit, isEscEvent} from './util.js';
+import {sendData} from './api.js';
+import {pageMain} from './nodes.js';
 
 const hashtagsInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
+const imgUploadForm = document.querySelector('.img-upload__form');
 
 const MIN_HASHTAG_LENGTH = 2;
 const MAX_HASHTAG_LENGTH = 20;
-let hashtagsArray = [];
+const MAX_HASHTAG_QUANTITY = 5;
+const MAX_COMMENT_LENGTH = 140;
 
-const hashtagCheck = (hashtag) => {
-  const valueLength = hashtag.length;
-  /*const regex = /^([a-zа-яё]+|\d+)$/i;*/
-
-  if (hashtag[0] != '#' && hashtagsArray.length <= 5) {
-    hashtagsInput.setCustomValidity('Хэштег должен начинаться с символа #');
-  } else if (valueLength < MIN_HASHTAG_LENGTH && hashtagsArray.length <= 5) {
-    hashtagsInput.setCustomValidity('Хэштег должен состоять из знака # и как минимум одного символа после него');
-  } /*else if (valueLength > 1) {
-    for (let i = 1; i <= valueLength - 1; i++) {
-      if (!regex.test(hashtag[i])) {
-        hashtagsInput.setCustomValidity('В имени хэштега можно использовать только буквы и числа');
-      }
-    }
-  }*/ else if (valueLength > MAX_HASHTAG_LENGTH) {
-    hashtagsInput.setCustomValidity('Хэштег не может быть длинее 20-ти символов');
-  } else if (hashtagsArray.length > 1 && hashtagsArray.length <= 5) {
-    for (let j = 1; j <= hashtagsArray.length - 1; j++) {
-      let current = hashtagsArray[j];
-
-      for (let k = 0; k < j; k++) {
-        if (current.toLowerCase() === hashtagsArray[k].toLowerCase()) {
-          hashtagsInput.setCustomValidity('Хэштеги не должны повторяться');
-        } else {
-          hashtagsInput.setCustomValidity('');
-        }
-      }
-    }
-  } else if (hashtagsArray.length > 5) {
-    hashtagsInput.setAttribute('maxlength', hashtagsArray.length);
-    hashtagsInput.setCustomValidity('Нельзя указывать более пяти хэштегов');
-  } else {
-    hashtagsInput.removeAttribute('maxlength');
-    hashtagsInput.setCustomValidity('');
-  }
-
-  hashtagsInput.reportValidity();
-}
+const errorTemplate = document.querySelector('#error').content;
+const errorMessage = errorTemplate.querySelector('.error');
+const successTemplate = document.querySelector('#success').content;
+const successMessage = successTemplate.querySelector('.success');
 
 hashtagsInput.addEventListener('input', () => {
-  /*onUploadEscKeydown.stopPropagation();*/
+  let hashtagsArray = hashtagsInput.value.toLowerCase().split(' ');
+  let regex = /^#[0-9a-zA-Zа-яА-Я]+$/;
 
-  hashtagsArray = hashtagsInput.value.split(' ');
+  for (let i = 0; i < hashtagsArray.length; i++) {
+    if (hashtagsArray[i][0] !== '#') {
+      hashtagsInput.setCustomValidity('Хэштег должен начинаться с символа #');
+    } else if (hashtagsArray[i].length > MAX_HASHTAG_LENGTH) {
+      hashtagsInput.setCustomValidity('Максимальная длина одного хэштега 20 символов, включая символ #');
+    } else if (hashtagsArray.length > MAX_HASHTAG_QUANTITY) {
+      hashtagsInput.setCustomValidity('Нельзя указывать более пяти хэштегов');
+    } else if (hashtagsArray[i].length < MIN_HASHTAG_LENGTH) {
+      hashtagsInput.setCustomValidity('Хэштег не может состоять только из одного символа #');
+    } else if (i !== hashtagsArray.indexOf(hashtagsArray[i]) || i !== hashtagsArray.lastIndexOf(hashtagsArray[i])) {
+      hashtagsInput.setCustomValidity('Хэштеги не должны повторяться');
+    } else if (hashtagsArray[i].search(regex) === -1) {
+      hashtagsInput.setCustomValidity('В имени хэштега можно использовать только буквы и числа');
+    } else {
+      hashtagsInput.setCustomValidity('');
+    }
 
-  for (let i = 0; i <= hashtagsArray.length - 1; i++) {
-    hashtagCheck(hashtagsArray[i]);
+    hashtagsInput.reportValidity();
   }
 
-  return hashtagsArray;
-});
+  if (!hashtagsInput.validity.valid) {
+    hashtagsInput.setAttribute('style', 'border-color: red; outline: none;');
+  } else {
+    hashtagsInput.removeAttribute('style');
+  }
+})
 
-hashtagsInput.addEventListener('invalid', () => {
-  hashtagsInput.setAttribute('style', 'border-color: red');
-});
-
-commentInput.addEventListener('input', (/*evt*/) => {
-  /*evt.stopPropagation();*/
-
-  if (isStringOverLimit(commentInput.value, 140)) {
+commentInput.addEventListener('input', () => {
+  if (isStringOverLimit(commentInput.value, MAX_COMMENT_LENGTH)) {
     commentInput.setCustomValidity('Длина комментария не может быть больше 140 символов');
   } else {
     commentInput.setCustomValidity('');
   }
 
   commentInput.reportValidity();
-});
 
-commentInput.addEventListener('invalid', () => {
-  commentInput.setAttribute('style', 'border-color: red');
-});
+  if (!commentInput.validity.valid) {
+    commentInput.setAttribute('style', 'border-color: red; outline: none;');
+  } else {
+    commentInput.removeAttribute('style');
+  }
+})
+
+const showPopupSuccess = () => {
+  const element = successMessage.cloneNode(true);
+  element.style.zIndex = 1000;
+  pageMain.appendChild(element);
+
+  const onEscKeydown = (evt) => {
+    if (isEscEvent(evt)) {
+      onPopupClick();
+    }
+  }
+
+  const onPopupClick = () => {
+    element.remove();
+    document.removeEventListener('keydown', onEscKeydown);
+  }
+
+  document.addEventListener('keydown', onEscKeydown);
+  element.addEventListener('click', onPopupClick);
+
+  const button = document.querySelector('.success__button');
+  button.addEventListener('click', onPopupClick);
+}
+
+const success = () => {
+  showPopupSuccess();
+}
+
+const showPopupError = () => {
+  const element = errorMessage.cloneNode(true);
+  element.style.zIndex = 1000;
+  pageMain.appendChild(element);
+
+  const onEscKeydown = (evt) => {
+    if (isEscEvent(evt)) {
+      onPopupClick();
+    }
+  }
+
+  const onPopupClick = () => {
+    element.remove();
+    document.removeEventListener('keydown', onEscKeydown);
+  }
+
+  document.addEventListener('keydown', onEscKeydown);
+  element.addEventListener('click', onPopupClick);
+
+  const button = document.querySelector('.error__button');
+  button.addEventListener('click', onPopupClick);
+}
+
+const error = () => {
+  showPopupError();
+}
+
+const setUserFormSubmit = (onSuccess, onError) => {
+  imgUploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => onSuccess(success()),
+      () => onError(error()),
+      new FormData(evt.target),
+    );
+  });
+}
+
+export {setUserFormSubmit, hashtagsInput, commentInput};

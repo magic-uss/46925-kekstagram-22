@@ -11,6 +11,7 @@ const getRandomInt = (a, b) => {
 
   let min = Math.ceil(a);
   let max = Math.floor(b);
+
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -22,6 +23,6 @@ const isStringOverLimit = (message, limit) => message.length >= limit;
 
 const isEscEvent = (evt) => {
   return evt.key === ('Escape' || 'Esc');
-};
+}
 
 export {getRandomInt, isStringOverLimit, isEscEvent};

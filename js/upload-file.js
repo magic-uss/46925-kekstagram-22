@@ -14,17 +14,21 @@ uploadInput.addEventListener('change', () => {
 
   uploadClose.addEventListener('click', () => {
     closeUpload();
-  });
+  })
 
   document.addEventListener('keydown', onUploadEscKeydown);
-});
+})
 
 const onUploadEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
+    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+      return;
+    }
+
     evt.preventDefault();
     closeUpload();
   }
-};
+}
 
 const closeUpload = () => {
   imageUploadWindow.classList.add('hidden');
@@ -34,7 +38,9 @@ const closeUpload = () => {
 
   uploadClose.removeEventListener('click', () => {
     closeUpload();
-  });
+  })
 
   document.removeEventListener('keydown', onUploadEscKeydown);
 }
+
+export {closeUpload};
