@@ -1,4 +1,4 @@
-import {effectSlider, previewImage, originalEffect} from './nodes.js';
+import {effectSlider, previewImage} from './nodes.js';
 import {hashtagsInput, commentInput} from './img-upload-form.js';
 
 const scaleValue = document.querySelector('.scale__control--value');
