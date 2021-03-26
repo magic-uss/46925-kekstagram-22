@@ -1,3 +1,4 @@
+/* global _:readonly */
 import './picture-list.js';
 import './upload-file.js';
 import './photo-editing.js';
@@ -9,7 +10,7 @@ import {getData} from './api.js';
 import {pageMain} from './nodes.js';
 import {createPhotos, selectDefault, selectRandom, selectDiscussed, createPhotosArray} from './picture-list.js';
 
-/*const CREATE_DELAY = 500;*/
+const CREATE_DELAY = 500;
 
 const errorMessage = () => {
   pageMain.insertAdjacentHTML('beforeend', '<p style="position: absolute; top: 0;">Ошибка загрузки данных с сервера</p>');
@@ -19,9 +20,18 @@ const fetchPhotos = getData(
   (uploadedPhotos) => {
     createPhotosArray(uploadedPhotos);
     createPhotos(uploadedPhotos);
-    selectDefault(uploadedPhotos);
-    selectRandom(uploadedPhotos);
-    selectDiscussed(uploadedPhotos);
+    selectDefault(uploadedPhotos, _.debounce(
+      (photos) => createPhotos(photos),
+      CREATE_DELAY,
+    ));
+    selectRandom(uploadedPhotos, _.debounce(
+      (photos) => createPhotos(photos),
+      CREATE_DELAY,
+    ));
+    selectDiscussed(uploadedPhotos, _.debounce(
+      (photos) => createPhotos(photos),
+      CREATE_DELAY,
+    ));
   },
   () => {
     errorMessage();

@@ -44,17 +44,17 @@ const clearPhotosList = () => {
   }
 }
 
-const selectDefault = (photos) => {
+const selectDefault = (photos, cb) => {
   document.querySelector('#filter-default').addEventListener('click', () => {
 
     clearPhotosList();
 
-    createPhotos(photos);
+    cb(photos);
     return photosCount = photos.length;
   })
 }
 
-const selectRandom = (photos) => {
+const selectRandom = (photos, cb) => {
   document.querySelector('#filter-random').addEventListener('click', () => {
 
     clearPhotosList();
@@ -74,21 +74,21 @@ const selectRandom = (photos) => {
       randomPhotosArray.push(photos[randomArray[i]]);
     }
 
-    createPhotos(randomPhotosArray);
+    cb(randomPhotosArray);
 
-    return photosCount = randomPhotosArray.length;
+    return randomPhotosArray, photosCount = randomPhotosArray.length;
   })
 }
 
-const selectDiscussed = (photos) => {
+const selectDiscussed = (photos, cb) => {
   document.querySelector('#filter-discussed').addEventListener('click', () => {
 
     const photosDiscussedArray = photos.slice().sort((photo1, photo2) => photo1.comments.length < photo2.comments.length ? 1 : -1);
 
     clearPhotosList();
 
-    createPhotos(photosDiscussedArray);
-    return photosCount = photosDiscussedArray.length;
+    cb(photosDiscussedArray);
+    return photosDiscussedArray, photosCount = photosDiscussedArray.length;
   })
 }
 
