@@ -6,22 +6,9 @@ const uploadClose = document.querySelector('#upload-cancel');
 const uploadInput = document.querySelector('#upload-file');
 const imageUploadWindow = document.querySelector('.img-upload__overlay');
 
-uploadInput.addEventListener('change', () => {
-  imageUploadWindow.classList.remove('hidden');
-  page.classList.add('modal-open');
-
-  uploadNewPhoto();
-
-  uploadClose.addEventListener('click', () => {
-    closeUpload();
-  })
-
-  document.addEventListener('keydown', onUploadEscKeydown);
-})
-
 const onUploadEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
-    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+    if (document.activeElement.className === 'text__hashtags' || document.activeElement.className === 'text__description') {
       return;
     }
 
@@ -42,5 +29,18 @@ const closeUpload = () => {
 
   document.removeEventListener('keydown', onUploadEscKeydown);
 }
+
+uploadInput.addEventListener('change', () => {
+  imageUploadWindow.classList.remove('hidden');
+  page.classList.add('modal-open');
+
+  uploadNewPhoto();
+
+  uploadClose.addEventListener('click', () => {
+    closeUpload();
+  })
+
+  document.addEventListener('keydown', onUploadEscKeydown);
+})
 
 export {closeUpload};
