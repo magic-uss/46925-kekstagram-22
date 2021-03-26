@@ -5,6 +5,7 @@ const scaleValue = document.querySelector('.scale__control--value');
 const scaleSmaller = document.querySelector('.scale__control--smaller');
 const inputsEffect = document.querySelectorAll('.effects__radio');
 const DEFAULT_SCALE_VALUE = 100;
+const SCALE_VALUE_STEP = 25;
 let originalScale = DEFAULT_SCALE_VALUE;
 
 const uploadNewPhoto = () => {
@@ -27,11 +28,11 @@ const uploadNewPhoto = () => {
 }
 
 const resizePhoto = (evt) => {
-  const value = (evt.target === scaleSmaller) ? -25 : 25;
+  const value = (evt.target === scaleSmaller) ? -SCALE_VALUE_STEP : SCALE_VALUE_STEP;
 
   originalScale = originalScale + value;
 
-  if (originalScale < 25 || originalScale > 100) {
+  if (originalScale < SCALE_VALUE_STEP || originalScale > DEFAULT_SCALE_VALUE) {
     originalScale = originalScale - value;
   }
 
@@ -48,9 +49,9 @@ const resizePhoto = (evt) => {
   return originalScale;
 }
 
-document.querySelector('.img-upload__scale').addEventListener('click', resizePhoto);
-
 const effectRadioButtons = document.querySelectorAll('.effects__radio');
+
+document.querySelector('.img-upload__scale').addEventListener('click', resizePhoto);
 
 for (let i = 0; i <= effectRadioButtons.length - 1; i++) {
   effectRadioButtons[i].addEventListener('click', () => {

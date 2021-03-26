@@ -1,3 +1,7 @@
+const Method =  {
+  POST: 'POST',
+}
+
 const getData = (onSuccess, onError) => () => {
   return fetch('https://22.javascript.pages.academy/kekstagram/data')
     .then((response) => response.json())
@@ -13,16 +17,16 @@ const sendData = (onSuccess, onError, body) => {
   fetch(
     'https://22.javascript.pages.academy/kekstagram',
     {
-      method: 'POST',
+      method: Method.POST,
       body,
     },
   )
     .then((response) => {
       if (response.ok) {
         onSuccess();
-      } else {
-        onError();
+        return;
       }
+      onError();
     })
     .catch(() => {
       onError();

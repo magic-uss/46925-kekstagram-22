@@ -39,10 +39,6 @@ const fetchPhotos = getData(
 
 fetchPhotos();
 
-setTimeout(() => {
-  document.querySelector('.img-filters').classList.remove('img-filters--inactive');
-}, 1000);
-
-setUserFormSubmit(closeUpload);
+setUserFormSubmit(closeUpload, closeUpload);
 
 
