@@ -3,8 +3,7 @@ import {hashtagsInput, commentInput} from './img-upload-form.js';
 
 const scaleValue = document.querySelector('.scale__control--value');
 const scaleSmaller = document.querySelector('.scale__control--smaller');
-const inputEffect = document.querySelector('.effects__radio');
-
+const inputsEffect = document.querySelectorAll('.effects__radio');
 const DEFAULT_SCALE_VALUE = 100;
 let originalScale = DEFAULT_SCALE_VALUE;
 
@@ -15,7 +14,14 @@ const uploadNewPhoto = () => {
   previewImage.removeAttribute('style', 'filter');
   previewImage.removeAttribute('class');
   effectSlider.setAttribute('hidden', true);
-  inputEffect.removeAttribute('checked');
+
+  for (let i = 0; i <= inputsEffect.length - 1; i++) {
+    if (i === 0) {
+      inputsEffect[i].checked = true;
+    }
+    inputsEffect[i].removeAttribute('checked');
+  }
+
   hashtagsInput.value = '';
   commentInput.value = '';
 }
