@@ -15,6 +15,7 @@ const filterButtons = document.querySelectorAll('.img-filters__button');
 const filterDefault = document.querySelector('#filter-default');
 const filterRandom = document.querySelector('#filter-random');
 const filterDiscussed = document.querySelector('#filter-discussed');
+const filtersForm = document.querySelector('.img-filters__form');
 
 let pictures = [];
 const RANDOM_ARRAY_LENGTH = 10;
@@ -52,19 +53,23 @@ const clearPhotosList = () => {
   }
 }
 
-const selectDefault = (photos, cb) => {
-  filterDefault.addEventListener('click', () => {
+const filterSwitch = (cb) => {
+  filtersForm.addEventListener('click', (evt) => {
+    cb(evt.target);
+  })
+}
+
+const renderPhotos = (filter, photos) => {
+  if (filter === filterDefault) {
     for (let i = 0; i <= filterButtons.length - 1; i++) {
       filterButtons[i].classList.remove('img-filters__button--active');
     }
     filterDefault.classList.add('img-filters__button--active');
 
-    cb(photos);
-  })
-}
+    createPhotos(photos);
+  }
 
-const selectRandom = (photos, cb) => {
-  filterRandom.addEventListener('click', () => {
+  if (filter === filterRandom) {
     for (let i = 0; i <= filterButtons.length - 1; i++) {
       filterButtons[i].classList.remove('img-filters__button--active');
     }
@@ -85,14 +90,12 @@ const selectRandom = (photos, cb) => {
       randomPhotosArray.push(photos[randomArray[i]]);
     }
 
-    cb(randomPhotosArray);
+    createPhotos(randomPhotosArray);
 
     return randomPhotosArray;
-  })
-}
+  }
 
-const selectDiscussed = (photos, cb) => {
-  filterDiscussed.addEventListener('click', () => {
+  if (filter === filterDiscussed) {
     for (let i = 0; i <= filterButtons.length - 1; i++) {
       filterButtons[i].classList.remove('img-filters__button--active');
     }
@@ -100,9 +103,9 @@ const selectDiscussed = (photos, cb) => {
 
     const photosDiscussedArray = photos.slice().sort((photo1, photo2) => photo1.comments.length < photo2.comments.length ? 1 : -1);
 
-    cb(photosDiscussedArray);
+    createPhotos(photosDiscussedArray);
     return photosDiscussedArray;
-  })
+  }
 }
 
 const onBigPictureEscKeydown = (evt) => {
@@ -184,4 +187,4 @@ pictureList.addEventListener('click', (evt) => {
   }
 })
 
-export {createPhotos, selectDefault, selectRandom, selectDiscussed, pictures, createPhotosArray};
+export {filterSwitch, renderPhotos, createPhotos, pictures, createPhotosArray};

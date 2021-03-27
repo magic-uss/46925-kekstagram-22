@@ -8,7 +8,7 @@ import {closeUpload} from './upload-file.js';
 import {setUserFormSubmit} from './img-upload-form.js';
 import {getData} from './api.js';
 import {pageMain} from './nodes.js';
-import {createPhotos, selectDefault, selectRandom, selectDiscussed, createPhotosArray} from './picture-list.js';
+import {filterSwitch, renderPhotos, createPhotos, createPhotosArray} from './picture-list.js';
 
 const CREATE_DELAY = 500;
 
@@ -18,18 +18,12 @@ const errorMessage = () => {
 
 const fetchPhotos = getData(
   (uploadedPhotos) => {
+
     createPhotosArray(uploadedPhotos);
     createPhotos(uploadedPhotos);
-    selectDefault(uploadedPhotos, _.debounce(
-      (photos) => createPhotos(photos),
-      CREATE_DELAY,
-    ));
-    selectRandom(uploadedPhotos, _.debounce(
-      (photos) => createPhotos(photos),
-      CREATE_DELAY,
-    ));
-    selectDiscussed(uploadedPhotos, _.debounce(
-      (photos) => createPhotos(photos),
+
+    filterSwitch(_.debounce(
+      (filter) => renderPhotos(filter, uploadedPhotos),
       CREATE_DELAY,
     ));
   },
