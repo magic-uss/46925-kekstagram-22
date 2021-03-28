@@ -19,7 +19,7 @@ const updateSliderOptions = (minValue, maxValue, start, step) => {
   });
 }
 
-const sliderUpdate = (effect, units) => {
+const updateSlider = (effect, units) => {
   effectSlider.noUiSlider.off('update');
 
   effectSlider.noUiSlider.on('update', (values, handle) => {
@@ -53,35 +53,35 @@ noUiSlider.create(effectSlider, {
 document.querySelector('#effect-chrome').addEventListener('change', (evt) => {
   if (evt.target.checked) {
     updateSliderOptions(0, 1, 1, 0.1);
-    sliderUpdate('grayscale', '');
+    updateSlider('grayscale', '');
   }
 })
 
 document.querySelector('#effect-sepia').addEventListener('change', (evt) => {
   if (evt.target.checked) {
     updateSliderOptions(0, 1, 1, 0.1);
-    sliderUpdate('sepia', '');
+    updateSlider('sepia', '');
   }
 })
 
 document.querySelector('#effect-marvin').addEventListener('change', (evt) => {
   if (evt.target.checked) {
     updateSliderOptions(0, 100, 100, 1);
-    sliderUpdate('invert', '%');
+    updateSlider('invert', '%');
   }
 })
 
 document.querySelector('#effect-phobos').addEventListener('change', (evt) => {
   if (evt.target.checked) {
     updateSliderOptions(0, 3, 3, 0.1);
-    sliderUpdate('blur', 'px');
+    updateSlider('blur', 'px');
   }
 })
 
 document.querySelector('#effect-heat').addEventListener('change', (evt) => {
   if (evt.target.checked) {
     updateSliderOptions(1, 3, 3, 0.1);
-    sliderUpdate('brightness', '');
+    updateSlider('brightness', '');
   }
 })
 

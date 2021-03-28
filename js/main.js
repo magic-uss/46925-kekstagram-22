@@ -12,7 +12,7 @@ import {filterSwitch, renderPhotos, createPhotos, createPhotosArray} from './pic
 
 const CREATE_DELAY = 500;
 
-const errorMessage = () => {
+const showErrorInformation = () => {
   pageMain.insertAdjacentHTML('beforeend', '<p style="position: absolute; top: 0;">Ошибка загрузки данных с сервера</p>');
 }
 
@@ -28,7 +28,7 @@ const fetchPhotos = getData(
     ));
   },
   () => {
-    errorMessage();
+    showErrorInformation();
   })
 
 fetchPhotos();

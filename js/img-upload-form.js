@@ -1,6 +1,6 @@
 import {isStringOverLimit, isEscEvent} from './util.js';
 import {sendData} from './api.js';
-import {pageMain} from './nodes.js';
+import {pageMain, uploadInput} from './nodes.js';
 
 const hashtagsInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
@@ -17,7 +17,7 @@ const MAX_COMMENT_LENGTH = 140;
 
 const showPopupSuccess = () => {
   const element = successMessage.cloneNode(true);
-  element.style.zIndex = 1000;
+  element.style.zIndex = '1000';
   pageMain.appendChild(element);
 
   const onEscKeydown = (evt) => {
@@ -38,13 +38,13 @@ const showPopupSuccess = () => {
   button.addEventListener('click', onPopupClick);
 }
 
-const success = () => {
+const showSuccessMessage = () => {
   showPopupSuccess();
 }
 
 const showPopupError = () => {
   const element = errorMessage.cloneNode(true);
-  element.style.zIndex = 1000;
+  element.style.zIndex = '1000';
   pageMain.appendChild(element);
 
   const onEscKeydown = (evt) => {
@@ -65,7 +65,7 @@ const showPopupError = () => {
   button.addEventListener('click', onPopupClick);
 }
 
-const error = () => {
+const showErrorMessage = () => {
   showPopupError();
 }
 
@@ -73,11 +73,14 @@ const setUserFormSubmit = (onSuccess, onError) => {
   imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
+
     sendData(
-      () => onSuccess(success()),
-      () => onError(error()),
+      () => onSuccess(showSuccessMessage()),
+      () => onError(showErrorMessage()),
       new FormData(evt.target),
     );
+
+    uploadInput.value = '';
   });
 }
 

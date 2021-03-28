@@ -9,9 +9,9 @@ const SCALE_VALUE_STEP = 25;
 let originalScale = DEFAULT_SCALE_VALUE;
 
 const uploadNewPhoto = () => {
+  originalScale = DEFAULT_SCALE_VALUE;
   scaleValue.value = DEFAULT_SCALE_VALUE + '%';
-  previewImage.style.transform = 'scale(' + 1 + ')';
-  previewImage.removeAttribute('style', 'filter');
+  previewImage.removeAttribute('style');
   previewImage.removeAttribute('class');
   effectSlider.setAttribute('hidden', true);
 

@@ -1,9 +1,8 @@
 import {isEscEvent} from './util.js';
 import {uploadNewPhoto} from './photo-editing.js';
-import {page} from './nodes.js';
+import {page, previewImage, uploadInput} from './nodes.js';
 
 const uploadClose = document.querySelector('#upload-cancel');
-const uploadInput = document.querySelector('#upload-file');
 const imageUploadWindow = document.querySelector('.img-upload__overlay');
 
 const onUploadEscKeydown = (evt) => {
@@ -35,6 +34,8 @@ uploadInput.addEventListener('change', () => {
   page.classList.add('modal-open');
 
   uploadNewPhoto();
+
+  previewImage.src = 'photos/' + uploadInput.files[0].name;
 
   uploadClose.addEventListener('click', () => {
     closeUpload();

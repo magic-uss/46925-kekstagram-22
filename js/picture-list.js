@@ -75,24 +75,24 @@ const renderPhotos = (filter, photos) => {
     }
     filterRandom.classList.add('img-filters__button--active');
 
-    let randomPhotosArray =[];
-    let randomArray =[];
+    let randomPhotos =[];
+    let randomImages =[];
 
-    while (randomArray.length < photos.length) {
+    while (randomImages.length < photos.length) {
       let random = getRandomInt(0, photos.length - 1);
 
-      if (randomArray.indexOf(random) === -1) {
-        randomArray.push(random);
+      if (randomImages.indexOf(random) === -1) {
+        randomImages.push(random);
       }
     }
 
     for (let i = 0; i < RANDOM_ARRAY_LENGTH; i++) {
-      randomPhotosArray.push(photos[randomArray[i]]);
+      randomPhotos.push(photos[randomImages[i]]);
     }
 
-    createPhotos(randomPhotosArray);
+    createPhotos(randomPhotos);
 
-    return randomPhotosArray;
+    return randomPhotos;
   }
 
   if (filter === filterDiscussed) {
