@@ -1,4 +1,5 @@
-/* global noUiSlider:readonly */
+import noUiSlider from 'nouislider';
+import 'nouislider/distribute/nouislider.css';
 import {effectSlider, previewImage, originalEffect} from './nodes.js';
 
 const effectValue = document.querySelector('.effect-level__value');
